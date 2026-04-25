@@ -1,0 +1,302 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: none;
+}
+
+body {
+    background: #ff06b5;
+}
+
+.hex-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    animation: hex-fade 2s ease-in-out infinite alternate;
+    animation-delay: var(--hex-delay, 0s); /* Default to 0s */
+    overflow: hidden;
+}
+
+@keyframes hex-fade {
+    from { opacity: 0.1; }
+    to   { opacity: 0.8; }
+}
+
+main {
+		position: relative;
+		overflow: hidden;
+		min-height: 100vh;
+		min-height: 100svh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: #ff06b5;
+		transition: background 0.04s;
+	}
+
+	.face-scan-bg {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		pointer-events: none;
+	}
+
+	.bezel {
+		position: relative;
+		z-index: 1;
+		overflow: hidden;
+		width: 66vw;
+		/* background: linear-gradient(145deg, #2c2c2c, #161616); */
+		background: #ffd300;
+		border-radius: 1.25rem;
+		padding: 1.75rem 2rem;
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 0.06),
+			inset 0 0 0 3px #333,
+			inset 0 0 0 5px #111,
+			0 24px 64px rgba(0, 0, 0, 0.75);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.75rem;
+	}
+
+	/* Bezel flash during glitch */
+	.bezel.glitching {
+		animation: screen-flash 0.17s steps(2, jump-none) infinite;
+	}
+
+	.heading,
+	.target {
+		font-family: 'VT323', monospace;
+		color: #00c840;
+		letter-spacing: 0.2em;
+		opacity: 0.55;
+		margin: 0;
+		text-shadow: 0 0 8px #00c840;
+	}
+
+	.heading {
+		font-size: clamp(0.75rem, 1.6vw, 1.4rem);
+	}
+
+	.target {
+		font-size: clamp(0.7rem, 1.4vw, 1.2rem);
+	}
+
+	.screen {
+		width: 100%;
+		background-color: #020d02;
+		background-image: repeating-linear-gradient(
+			0deg,
+			transparent,
+			transparent 3px,
+			rgba(0, 0, 0, 0.12) 3px,
+			rgba(0, 0, 0, 0.12) 4px
+		);
+		border-radius: 0.5rem;
+		padding: 1.25rem 0.5rem;
+		box-shadow:
+			inset 0 2px 16px rgba(0, 0, 0, 0.9),
+			inset 0 0 48px rgba(0, 0, 0, 0.5);
+	}
+
+	@keyframes screen-flash {
+		0% {
+			filter: brightness(1);
+			transform: translateX(0);
+			box-shadow:
+				inset 0 1px 0 rgba(255, 255, 255, 0.06),
+				inset 0 0 0 3px #333,
+				inset 0 0 0 5px #111,
+				0 24px 64px rgba(0, 0, 0, 0.75);
+		}
+		50% {
+			filter: brightness(2) hue-rotate(40deg) saturate(2);
+			transform: translateX(3px);
+			box-shadow:
+				inset 0 1px 0 rgba(255, 255, 255, 0.2),
+				inset 0 0 0 5px #ff0030,
+				inset 0 0 0 9px #00ffff,
+				0 24px 64px rgba(200, 0, 30, 0.6);
+		}
+		100% {
+			filter: brightness(1);
+			transform: translateX(0);
+			box-shadow:
+				inset 0 1px 0 rgba(255, 255, 255, 0.06),
+				inset 0 0 0 3px #333,
+				inset 0 0 0 5px #111,
+				0 24px 64px rgba(0, 0, 0, 0.75);
+		}
+	}
+
+	.display {
+		display: flex;
+		align-items: flex-start;
+		justify-content: center;
+		width: 100%;
+	}
+
+	/* ── Glitch shards ───────────────────────────────────────────────────────── */
+
+	.shard {
+		position: absolute;
+		inset: 0;
+		background: #ffd300;
+		border-radius: 1.25rem;
+		padding: 1.75rem 2rem;
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 0.06),
+			inset 0 0 0 3px #333,
+			inset 0 0 0 5px #111;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.75rem;
+		pointer-events: none;
+		will-change: transform, clip-path;
+	}
+
+	/* Green shard — normal phosphor colour */
+	.shard-green .digits,
+	.shard-green .sep {
+		color: #00ff41;
+		text-shadow:
+			0 0 6px #00ff41,
+			0 0 20px #00ff41;
+	}
+
+	/* Red channel — chromatic aberration */
+	.shard-red .digits,
+	.shard-red .sep {
+		color: #ff003c;
+		text-shadow:
+			0 0 8px #ff003c,
+			0 0 24px #ff003c;
+		mix-blend-mode: screen;
+	}
+
+	/* Cyan channel — chromatic aberration */
+	.shard-cyan .digits,
+	.shard-cyan .sep {
+		color: #00ffff;
+		text-shadow:
+			0 0 8px #00ffff,
+			0 0 24px #00ffff;
+		mix-blend-mode: screen;
+	}
+
+	/* ─────────────────────────────────────────────────────────────────────────── */
+
+	.unit {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		flex: 1;
+		min-width: 0;
+	}
+
+	.digits {
+		font-family: 'VT323', monospace;
+		font-size: clamp(1.2rem, 5vw, 5rem);
+		color: #00ff41;
+		text-shadow:
+			0 0 6px #00ff41,
+			0 0 16px #00ff41,
+			0 0 32px #00c030;
+		line-height: 1;
+		letter-spacing: 0.04em;
+		display: block;
+	}
+
+	.lbl {
+		font-family: 'VT323', monospace;
+		font-size: clamp(0.5rem, 1.1vw, 0.95rem);
+		color: #00c840;
+		opacity: 0.5;
+		letter-spacing: 0.18em;
+		margin-top: 0.25em;
+		display: block;
+	}
+
+	.sep {
+		font-family: 'VT323', monospace;
+		font-size: clamp(1.2rem, 5vw, 5rem);
+		color: #00ff41;
+		text-shadow:
+			0 0 6px #00ff41,
+			0 0 16px #00ff41;
+		line-height: 1;
+		opacity: 0.65;
+		flex: 0 0 auto;
+		padding: 0 0.05em;
+		align-self: flex-start;
+	}
+
+	/* Tablet */
+	@media (max-width: 768px) {
+		.bezel {
+			width: 88vw;
+			padding: 1.5rem 1.25rem;
+		}
+		.shard {
+			padding: 1.5rem 1.25rem;
+		}
+	}
+
+	.cyberpunk-logo {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		z-index: 2;
+		width: 20vw;
+		padding: 1rem;
+		pointer-events: none;
+	}
+
+	.cyberpunk-logo img {
+		width: 100%;
+		height: auto;
+		display: block;
+	}
+
+	/* Tablet */
+	@media (min-width: 481px) and (max-width: 768px) {
+		.cyberpunk-logo {
+			width: 40vw;
+		}
+	}
+
+	/* Mobile */
+	@media (max-width: 480px) {
+		.bezel {
+			width: 94vw;
+			padding: 1.1rem 0.75rem;
+			border-radius: 0.85rem;
+			gap: 0.5rem;
+		}
+
+		.screen {
+			padding: 1rem 0.25rem;
+		}
+
+		.shard {
+			padding: 1.1rem 0.75rem;
+			gap: 0.5rem;
+			border-radius: 0.85rem;
+		}
+
+		.cyberpunk-logo {
+			width: 50vw;
+			padding: 0.75rem;
+		}
+	}
