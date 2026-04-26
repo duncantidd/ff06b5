@@ -74,7 +74,6 @@ main {
 		animation: screen-flash 0.17s steps(2, jump-none) infinite;
 	}
 
-	.heading,
 	.target {
 		font-family: 'VT323', monospace;
 		color: #00c840;
@@ -82,6 +81,15 @@ main {
 		opacity: 0.55;
 		margin: 0;
 		text-shadow: 0 0 8px #00c840;
+	}
+
+	.heading {
+		font-family: 'VT323', monospace;
+		color: #ff06b5;
+		letter-spacing: 0.2em;
+		opacity: 0.55;
+		margin: 0;
+		text-shadow: 0 0 8px #ff06b5;
 	}
 
 	.heading {
