@@ -81,6 +81,7 @@ main {
 		opacity: 0.55;
 		margin: 0;
 		text-shadow: 0 0 8px #00c840;
+		font-size: clamp(0.7rem, 1.4vw, 1.2rem);
 	}
 
 	.heading {
@@ -90,14 +91,7 @@ main {
 		opacity: 0.55;
 		margin: 0;
 		text-shadow: 0 0 8px #ff06b5;
-	}
-
-	.heading {
 		font-size: clamp(0.75rem, 1.6vw, 1.4rem);
-	}
-
-	.target {
-		font-size: clamp(0.7rem, 1.4vw, 1.2rem);
 	}
 
 	.screen {
