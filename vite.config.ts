@@ -13,7 +13,9 @@ export default defineConfig(
                 'localhost',
                 '127.0.0.1',
                 '::1',
-                'tina.tidd.pro'
+                'tina.tidd.pro',
+                'raspberrypi.local',
+                'staging.ff06b5.com'
             ]
         }
     }
