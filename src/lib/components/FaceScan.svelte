@@ -19,6 +19,8 @@
 
     // Effect: Handle mouse movement and touch events
     $effect(() => {
+        if (typeof window === 'undefined') return;
+
         const updatePosition = (clientX: number) => {
             if (containerElement) {
                 const rect = containerElement.getBoundingClientRect();

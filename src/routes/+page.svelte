@@ -1,5 +1,6 @@
 <script lang="ts">
 	import CountdownTimer from '$lib/components/CountdownTimer.svelte';
+	import DataFuck from '$lib/components/DataFuck.svelte';
 </script>
 
 
@@ -10,4 +11,5 @@
 	<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
 </svelte:head>
 
+<DataFuck />
 <CountdownTimer />

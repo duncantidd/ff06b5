@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
+	import { browser } from '$app/environment';
     import FaceScan from '$lib/components/FaceScan.svelte';
 
 	const TARGET = new Date(2077, 0, 1, 0, 0, 0, 0);
@@ -130,15 +131,74 @@
 
 	// ─────────────────────────────────────────────────────────────────────────
 
+	// ── F Key Hold ───────────────────────────────────────────────────────────
+
+	let fHeld = $state(false);
+	let fFillProgress = $state(0);
+	let fFillDuration = $state('2s');
+	let fHoldTimer: ReturnType<typeof setTimeout> | undefined;
+	let fDrainTimer: ReturnType<typeof setTimeout> | undefined;
+
+	function onFKeyComplete() {
+		fHeld = false;
+		fDrainTimer = setTimeout(() => {
+			fFillDuration = '0.4s';
+			fFillProgress = 0;
+		}, 250);
+		triggerGlitch();
+		setTimeout(() => {
+			window.location.href = '/cyberware';
+		}, 9 * 85 + 200);
+	}
+
+	function startHold() {
+		if (fHeld) return;
+		clearTimeout(fDrainTimer);
+		fHeld = true;
+		fFillDuration = '2s';
+		fFillProgress = 1;
+		fHoldTimer = setTimeout(onFKeyComplete, 2000);
+	}
+
+	function stopHold() {
+		if (!fHeld) return;
+		clearTimeout(fHoldTimer);
+		fHeld = false;
+		fFillDuration = '0.4s';
+		fFillProgress = 0;
+	}
+
+	function handleFKeyDown(e: KeyboardEvent) {
+		if (e.key !== 'f' && e.key !== 'F') return;
+		startHold();
+	}
+
+	function handleFKeyUp(e: KeyboardEvent) {
+		if (e.key !== 'f' && e.key !== 'F') return;
+		stopHold();
+	}
+
+	// ─────────────────────────────────────────────────────────────────────────
+
 	onMount(() => {
 		timer = setInterval(() => {
 			cd = compute();
 		}, 1000);
+		if (browser) {
+			window.addEventListener('keydown', handleFKeyDown);
+			window.addEventListener('keyup', handleFKeyUp);
+		}
 	});
 
 	onDestroy(() => {
 		clearInterval(timer);
 		clearInterval(glitchTimer);
+		clearTimeout(fHoldTimer);
+		clearTimeout(fDrainTimer);
+		if (browser) {
+			window.removeEventListener('keydown', handleFKeyDown);
+			window.removeEventListener('keyup', handleFKeyUp);
+		}
 	});
 
 	const pad = (n: number) => String(n).padStart(2, '0');
@@ -159,7 +219,6 @@
 		{#if i > 0}<span class="sep" aria-hidden="true">:</span>{/if}
 		<div class="unit">
 			<span class="digits">{pad(cd[seg.key])}</span>
-			<!-- <span class="lbl">{seg.label}</span> -->
 		</div>
 	{/each}
 {/snippet}
@@ -176,7 +235,6 @@
 				{@render displayContent()}
 			</div>
 		</div>
-		<!-- <p class="target">01 JANUARY 2077</p> -->
 
 		{#if glitchActive}
 			{#each glitchSlices as slice}
@@ -195,4 +253,24 @@
 		{/if}
 	</div>
     <div class="cyberpunk-logo"><img src="cyberpunk_logo.png" alt="Cyberpunk 2077"></div>
+	<div class="f-key-wrap">
+		<div
+			class="f-key-btn"
+			role="button"
+			tabindex="0"
+			aria-label="Hold to activate"
+			onpointerdown={(e) => { e.currentTarget.setPointerCapture(e.pointerId); startHold(); }}
+			onpointerup={stopHold}
+			onpointerleave={stopHold}
+			onpointercancel={stopHold}
+		>
+			<div
+				class="f-key-fill"
+				style:transform="scaleY({fFillProgress})"
+				style:transition="transform {fFillDuration} linear"
+			></div>
+			<div class="f-key-scanlines"></div>
+			<span class="f-key-letter">F</span>
+		</div>
+	</div>
 </main>
