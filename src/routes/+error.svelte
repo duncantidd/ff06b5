@@ -1,16 +1,18 @@
 <script lang="ts">
     import DataFuck from "$lib/components/DataFuck.svelte";
+    import ActionKeys from "$lib/components/ActionKeys.svelte";
     import { page } from '$app/stores';
 </script>
 
 <svelte:head>
-	<title>Oh fuck!</title>
+	<title>FF:06:B5</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
 	<link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display&display=swap" rel="stylesheet">
 </svelte:head>
 
 <DataFuck />
+<ActionKeys letter="F" />
 <div class="error-container" style="min-height: 100svh; display: flex; align-items: center; justify-content: center; width: 100%;">
     <div class="hex-pattern absolute mt-[-120px] ml-[260px]"><img src="honeycomb2-light.png" alt=""></div>
 	<h1 style="font-weight: 700; z-index: 30;">Oh fuck!</h1>
